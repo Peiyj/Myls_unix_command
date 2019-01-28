@@ -1,0 +1,187 @@
+/* Header
+ * Name: Yingjian Pei
+ * Login: cs30fex
+ * Date: Dec 04, 2018
+ * Source of Help: myself and Tutor */ 
+ 
+ Description:
+
+ The purpose of this assignment is to further emphasize C and implement a real
+ Unix command (along with using more standard C library routines). You will
+ build a program called myls that will function similarly to the real Unix
+ command ls.
+
+ How to build/compile the program:
+ 1) You first login to the ucsd ieng6 account
+ 2) Then we need to ssh cs30xxy@pi-cluster.ucsd.edu
+ 3) Then we need to creat a directory named pa4
+ 4) Then we write c and assembly and c files
+ 5) Then we build the assembly and c files by following the pa
+    instructions
+ 6) Afterward, we compile the program by "make"
+ 7) Usually, we might need to "make clean" 
+ 8) Then we would have a executionable file named pa4
+ 9) we run the program by saying ./main and put in the flags
+ 10) then we run ./main and put in the flags
+
+ Example of normal output :
+ The normal output are directed to stdout
+.
+  ./Makefile
+  ./README
+  ./Test
+   ./Test/NewTest
+    ./Test/NewTest/NewTest2
+    ./Test/NewTest/newer
+    ./Test/NewTest/newest
+    ./Test/NewTest/older
+    ./Test/NewTest/oldest
+   ./Test/NewTest2
+   ./Test/newer
+   ./Test/newest
+   ./Test/older
+   ./Test/oldest
+  ./buildFileTree.c
+  ./buildFileTree.o
+  ./freeFileTree.c
+  ./freeFileTree.o
+  ./getFileCount.o
+  ./getFileCount.s
+  ./getFileInfo.c
+  ./getFileInfo.o
+  ./isHidden.c
+  ./isHidden.o
+  ./main.c
+  ./main.o
+  ./myls
+  ./mysol
+  ./nameCompare.o
+  ./nameCompare.s
+  ./nameCompareRev.o
+  ./nameCompareRev.s
+  ./pa4.h
+  ./pa4EC.h
+  ./pa4Globals.c
+  ./pa4Globals.o
+  ./pa4Strings.h
+  ./printFiles.c
+  ./printFiles.o
+  ./printPermissions.c
+  ./printPermissions.o
+  ./refsol
+  ./sampleGFC.c
+  ./test.h
+  ./testbuildFileTree
+  ./testbuildFileTree.c
+  ./testgetFileCount
+  ./testgetFileCount.c
+  ./testnameCompare.c
+  ./testnameCompareRev
+  ./testnameCompareRev.c
+  ./testprintFiles
+  ./testprintFiles.c
+  ./testprintPermissions
+  ./testprintPermissions.c
+  ./testtimeCompare.c
+  ./testtimeCompareRev
+  ./testtimeCompareRev.c
+  ./timeCompare.o
+  ./timeCompare.s
+  ./timeCompareRev.o
+  ./timeCompareRev.s
+
+ Example of abnormal output :
+ The abnormal output are directed to stderr.
+
+Extra argument a detected
+Usage: ./myls [-aclrth] [-f file]
+  -a 	 show all files, including hidden files
+  -c 	 print file count, including hidden files
+  -f 	 [file] specify directory to list
+  -l 	 list files in long format
+  -r 	 sort files in reversed order
+  -t 	 sort files by time, instead of by name
+  -h 	 show the help message
+ 
+ How you tested your program:
+ I used gdb to help me debug the errors. By step, next, nexti commands, I am
+ able to find the compilation and logical erros at specific lines of function. 
+ In this pa, there are a lot of segmentation errors. I used gdp to find the
+ memory leaks and was able to make sure the program run without bugs. Then
+ finally, I used the diff command to find the difference between the
+ original and the standard solution.
+
+ Answer to PA specific questions:
+ Machine Instruction Translations:
+ 1) For cond, it is alwys 1110. Then for op: it is going to be 00. Since 
+ there is immediant constant 1. Then the cmp for add is 0100. Then for s
+ is 0. Then for Rn is r13 so it is 1101. Then for Rd is fp so it is 1011.
+ Then finally for src is 000000000100. Finally we have 0xE28DB004
+
+ 2) For cond, it is always 1110. Then for op, it is going to be 01. For 
+ immediant constant 0. After that, PUBWL is going to be 10000. Then for
+ Rn is going to be 1011. Then for Rd is going 0000. Finally for src, 
+ we have 000000001000. In the end we have 0xE50B0008
+
+ 3) For cond, it is always 1110. Then for op, it is going to be 01. Then for 
+ PUBWL is goint to be 00001. Then for Rn it is going to be fp so it is 1011.
+ After that, we have src which will be 000000001000.
+ In the end, we have 0xE51B0008
+ 
+ 4) For cond, it is 1010 because it is bge. Then op is 10. Then 1l is 10. 
+ After that we have src 0000000...0001.
+ In the end, we have 0xAA000001.
+
+ 5) For cond, it is 1101 because it is blt. Then op is always 10. Then 1l is 10.
+ After that we have src 000....0001.
+ In the end, we have 0xDA000001.
+ 
+ 6) For cond, it is always 1110. Then op is 00. Then since we have an imediant
+ there is immediant constant 1. Then the cmp for add is 0100. Then for s
+ is 0. Then for Rn is r13 so it is 1011. Then for Rd is fp so it is 1101.
+ Finally, we have 0xE24BD004
+
+ 1)
+ filename       filename        filename        filename
+ buf[0]         buf[1]          buf[2]          buf[3]
+ buf[4]         buf[5]          buf[6]          buf[7]
+ buf[8]         buf[9]          buf[10]         buf[11] 
+ buf[12]        buf[13]         buf[14]         buf[15]
+ buf[16]        buf[17]         buf[18]         buf[19]
+ ptrToIsHidden  ptrToIsHidden   ptrToIsHidden   ptrToIsHidden
+ fp             fp              fp              fp
+ lr             lr              lr              lr
+
+ 2)
+ It should be 20 bytes
+
+ 3)
+ ptrToIsHidden, lr and fp maybe hidden. Specifically, if the string 
+ is between 20-23, ptrToIsHidden will be affected. Then, if the string
+ is between 24-27, ptrToIsHidden and fp will be affected. If it is above
+ 28, then the three local vars will be affected.
+
+ 4)
+ The memory address in hex is 0x11cdc
+
+ 5)
+ "\xdc\x1c\x01\x00"
+
+ 6)
+ The string that would cause vulnerability() to call secret() instead of 
+ isHidden() is: 12345678912345678912\xdc\x1c\x01
+
+ 7)
+ It is an animation that says Secret is a train that describes CS30 Fall 2018,
+ Paul and the Tutor Gang are proud of you! Good job Hacker!
+
+ 8)
+ change strcpy(buf, filename); to strncpy(buf, filename, 
+    VULNERABILITY_BUFSIZE -  1); because we want to copy ONLY 19 bytes.
+ 
+
+
+
+
+
+
